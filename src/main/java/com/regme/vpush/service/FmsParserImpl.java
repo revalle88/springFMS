@@ -3,11 +3,13 @@ package com.regme.vpush.service;
 import java.io.File;
 import java.net.URL;
 import org.apache.commons.io.*;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by admin on 13.08.2018.
  */
-public class fmsParserImpl implements fmsParser {
+@Service
+public class FmsParserImpl implements FmsParser {
     private File zipFile;
     private String downloadDir = ClassLoader.getSystemResource(".").getFile();
     private String zipFileName = "fms.zip";
@@ -23,7 +25,7 @@ public class fmsParserImpl implements fmsParser {
                 System.out.println("File is created!");
             } else {
                 System.out.println("File already exists.");
-            }           
+            }
             FileUtils.copyURLToFile(new URL(sourceURL), zipFile);
         }
         catch (Exception e) { e.printStackTrace(); }
