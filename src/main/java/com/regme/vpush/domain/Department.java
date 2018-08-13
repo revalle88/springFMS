@@ -1,6 +1,8 @@
 package com.regme.vpush.domain;
 
+
 import javax.persistence.*;
+
 
 /**
  * Created by admin on 13.08.2018.
