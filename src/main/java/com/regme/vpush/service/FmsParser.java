@@ -7,4 +7,5 @@ public interface FmsParser {
    // String parse();
   //  String unzip();
    String load();
+   String unzip();
 }
