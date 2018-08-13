@@ -8,7 +8,10 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.regme.vpush.domain.Department;
+import com.regme.vpush.repository.DepartmentRepository;
 import org.apache.commons.io.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +25,8 @@ public class FmsParserImpl implements FmsParser {
     private String sourceURL = "http://webzato.com/fms/fms_structure_10012018.zip";
     private String uncompressedDir = ClassLoader.getSystemResource(".").getFile()+"uncompressed/";
     private String csvFile;
-
+    @Autowired
+    private DepartmentRepository departmentRepository;
     //Загрузка файла
     public String load(){
 
@@ -98,6 +102,45 @@ public class FmsParserImpl implements FmsParser {
         return "OK";
     }
 
+    public String parse(){
+        //чистим таблицу
+        //TODO сделать не полное удаление а апдейт по коду
+        departmentRepository.deleteAll();
+        String line = "";
+        String cvsSplitBy = ",";
+        String charset = "cp1251"; // or what corresponds
+        try {
+
+
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader (new FileInputStream(csvFile), charset));
+
+
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] depStr = line.split(cvsSplitBy);
+                String code = depStr[1].replaceAll("\"","");//проверь!
+                code = code.replaceAll(" ","");//проверь!
+                String name = depStr[0].replaceAll("\"","");//проверь!
+                String utf8name= new String(name.getBytes("utf-8"),"utf-8");
+
+                System.out.println("Country [code= " + depStr[1] + " , name=" + name + "]");
+                Department department = new Department(name, code);
+                this.departmentRepository.save(department);
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "OK";
+    }
+
+    public String convert(){
+
+        return "OK";
+    }
 
 
 

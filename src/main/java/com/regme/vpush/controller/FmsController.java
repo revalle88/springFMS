@@ -28,7 +28,7 @@ public class FmsController {
         //TODO
         fmsParser.load();
         fmsParser.unzip();
-       // fmsParser.parse();
+        fmsParser.parse();
         return "OK";
         // return "OK";
     }
