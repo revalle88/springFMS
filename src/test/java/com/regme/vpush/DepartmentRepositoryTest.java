@@ -15,7 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * Created by admin on 13.08.2018.
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest
 public class DepartmentRepositoryTest {
 
     @Autowired
@@ -23,9 +23,11 @@ public class DepartmentRepositoryTest {
     @Test
     public void whenFindByCode_thenReturnDepartment() {
        // String code = "440011";
+
         Department department = new Department("fmsTestName", "440011");
         this.departmentRepository.save(department);
         Department foundDepartment = departmentRepository.findByCode("440011");
-        assertThat(foundDepartment).isEqualTo(department);
+        assertThat(foundDepartment.getName()).isEqualTo(department.getName());
+        this.departmentRepository.delete(foundDepartment);
     }
 }

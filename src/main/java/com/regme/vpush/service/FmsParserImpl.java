@@ -39,7 +39,7 @@ public class FmsParserImpl implements FmsParser {
     @Autowired
     private DepartmentRepository departmentRepository;
     //Загрузка файла
-    public String load(){
+    public File load(){
 
 
         try {
@@ -56,7 +56,7 @@ public class FmsParserImpl implements FmsParser {
             FileUtils.copyURLToFile(new URL(sourceURL), zipFile);
         }
         catch (Exception e) { e.printStackTrace(); }
-        return "OK";
+        return zipFile;
     }
 
     public String unzip(){
@@ -64,7 +64,6 @@ public class FmsParserImpl implements FmsParser {
 
         try(ZipFile file = new ZipFile(downloadDir + zipFileName))
         {
-            FileSystem fileSystem = FileSystems.getDefault();
             //Get file entries
             Enumeration<? extends ZipEntry> entries = file.entries();
 
@@ -112,7 +111,7 @@ public class FmsParserImpl implements FmsParser {
         }
 
 
-        return "OK";
+        return csvFile;
     }
 
     public String parse(){

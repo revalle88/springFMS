@@ -1,11 +1,11 @@
 package com.regme.vpush.controller;
 
+import com.regme.vpush.domain.Department;
+import com.regme.vpush.repository.DepartmentRepository;
 import com.regme.vpush.service.FmsParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by admin on 13.08.2018.
@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class FmsController {
     @Autowired
     private FmsParser fmsParser;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
+
 
     @GetMapping(value = "/test")
     @ResponseBody
@@ -32,6 +36,13 @@ public class FmsController {
         return "OK";
         // return "OK";
     }
+
+    @PostMapping(value = "/getdep")
+    public @ResponseBody Department getDepartment(@RequestParam("code") String code){
+        Department department = departmentRepository.findByCode(code);
+        return department;
+    }
+
 
 
 

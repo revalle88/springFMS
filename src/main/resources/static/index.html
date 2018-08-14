@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>YourApp</title>
     <script src="js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <h3> FMS Check App </h3>
 <br>
-<button id = "updateFms">Обновить справочник</button><br><br>
-<input type="text" id="data"/><button id = "post">Найти по коду</button><br>
+<button id = "updateFms">РћР±РЅРѕРІРёС‚СЊ СЃРїСЂР°РІРѕС‡РЅРёРє</button><br><br>
+<input type="text" id="data"/><button id = "findFms">РќР°Р№С‚Рё РїРѕ РєРѕРґСѓ</button><br>
 
 
 
@@ -32,6 +32,42 @@
                 console.log("ERROR: ", e);
             }
         });
+    });
+
+
+    $('#findFms').click(function () {
+        if (!$("#data").val()) {
+            alert("Enter your data!");
+        } else {
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '/getdep',
+
+
+                data: {
+                    'code': $("#data").val()
+                },
+                success: function (response) {
+                    if (response){
+                        var html = "<br>CODE: " + response.code + " Name: "+ response.name;
+                        $('#container').html(html);
+                    }
+                    else{
+                        var html = "<br> FMS with this code not Found!";
+                        $('#container').html(html);
+
+                    }
+
+
+                },
+                error : function(e) {
+                    alert("Error!")
+                    console.log("ERROR: ", e);
+                }
+            });
+        }
+
     });
 </script>
 
