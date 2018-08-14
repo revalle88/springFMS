@@ -8,10 +8,12 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.regme.vpush.DemoApplication;
 import com.regme.vpush.domain.Department;
 import com.regme.vpush.repository.DepartmentRepository;
 import org.apache.commons.io.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,11 +22,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class FmsParserImpl implements FmsParser {
     private File zipFile;
-    private String downloadDir = ClassLoader.getSystemResource(".").getFile()+ "/";
+    //File file = new File(".");
+    File home = new ApplicationHome().getDir();
+   // private String downloadDir = ClassLoader.getSystemResource(".").getFile()+ "/";
+   // private String downloadDir = file.getAbsolutePath();
+   private String downloadDir = home.getAbsolutePath()+"/";
+
     private String zipFileName = "fms.zip";
     private String sourceURL = "http://webzato.com/fms/fms_structure_10012018.zip";
-    private String uncompressedDir = ClassLoader.getSystemResource(".").getFile()+"uncompressed/";
+    private String uncompressedDir = downloadDir+"uncompressed/";
     private String csvFile;
+
+
+
+
     @Autowired
     private DepartmentRepository departmentRepository;
     //Загрузка файла
@@ -32,7 +43,9 @@ public class FmsParserImpl implements FmsParser {
 
 
         try {
-            System.out.println(ClassLoader.getSystemResource("."));
+            System.out.println("downloadDir: ");
+            System.out.println(downloadDir);
+          //  System.out.println(ClassLoader.getSystemResource("."));
             //TODO project resources
             zipFile = new File(downloadDir + zipFileName);
             if (zipFile.createNewFile()) {
