@@ -5,77 +5,20 @@
     <title>YourApp</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <script src="js/jquery-3.3.1.min.js"></script>
+
 </head>
 <body>
 <div class="container">
 <h3> FMS Check App </h3>
 <br>
-<button id = "updateFms" class="btn btn-primary">Обновить справочник</button><br><br>
-<input type="text" id="data"/><button id = "findFms" class="btn btn-primary">Найти по коду</button><br>
+<button id = "updateFms" class="btn btn-primary" >Обновить справочник</button><br><br>
+<input type="text" id="data" class="form-control" placeholder="Code: " aria-label="Username"/><button id = "findFms" class="btn btn-primary">Найти по коду</button><br>
 
 
 
 <div id="container"></div>
 </div>
 </body>
-
-<script>
-    $('#updateFms').click(function () {
-        //alert("Jquery works!");
-        $.ajax({
-            type: "GET",
-            cache: false,
-            url: '/parse',
-            success: function (response) {
-                var html = "File loaded to folder: <br>" + response + "<br>Database Updated successfully";
-                $('#container').html(html);
-                alert("Success! FMS table updated!");
-
-                console.log(response);
-
-            },
-            error : function(e) {
-                alert("Error!")
-                console.log("ERROR: ", e);
-            }
-        });
-    });
-
-
-    $('#findFms').click(function () {
-        if (!$("#data").val()) {
-            alert("Enter your data!");
-        } else {
-            $.ajax({
-                type: "POST",
-                cache: false,
-                url: '/getdep',
-
-
-                data: {
-                    'code': $("#data").val()
-                },
-                success: function (response) {
-                    if (response){
-                        var html = "<br>CODE: " + response.code + " Name: "+ response.name;
-                        $('#container').html(html);
-                    }
-                    else{
-                        var html = "<br> FMS with this code not Found!";
-                        $('#container').html(html);
-
-                    }
-
-
-                },
-                error : function(e) {
-                    alert("Error!")
-                    console.log("ERROR: ", e);
-                }
-            });
-        }
-
-    });
-</script>
+<script src="js/app.js"></script>
 
 </html>
