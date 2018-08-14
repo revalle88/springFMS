@@ -29,12 +29,7 @@ public class FmsController {
     @RequestMapping("/parse")
     @ResponseBody
     public String parseFms(){
-        //TODO
-        fmsParser.load();
-        fmsParser.unzip();
-        fmsParser.parse();
-        return "OK";
-        // return "OK";
+        return fmsParser.update();
     }
 
     @PostMapping(value = "/getdep")

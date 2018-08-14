@@ -154,6 +154,14 @@ public class FmsParserImpl implements FmsParser {
         return "OK";
     }
 
+    public String update(){
+        this.load();
+        this.unzip();
+        this.parse();
+        return csvFile;
+
+    }
+
 
 
 }

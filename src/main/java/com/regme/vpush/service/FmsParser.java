@@ -10,4 +10,5 @@ public interface FmsParser {
    File load();
    String unzip();
    String parse();
+   String update();
 }

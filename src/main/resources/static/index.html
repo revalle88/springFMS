@@ -3,17 +3,20 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>YourApp</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <script src="js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
+<div class="container">
 <h3> FMS Check App </h3>
 <br>
-<button id = "updateFms">Обновить справочник</button><br><br>
-<input type="text" id="data"/><button id = "findFms">Найти по коду</button><br>
+<button id = "updateFms" class="btn btn-primary">Обновить справочник</button><br><br>
+<input type="text" id="data"/><button id = "findFms" class="btn btn-primary">Найти по коду</button><br>
 
 
 
 <div id="container"></div>
+</div>
 </body>
 
 <script>
@@ -24,7 +27,11 @@
             cache: false,
             url: '/parse',
             success: function (response) {
+                var html = "File loaded to folder: <br>" + response + "<br>Database Updated successfully";
+                $('#container').html(html);
                 alert("Success! FMS table updated!");
+
+                console.log(response);
 
             },
             error : function(e) {
