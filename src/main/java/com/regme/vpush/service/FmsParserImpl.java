@@ -22,31 +22,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class FmsParserImpl implements FmsParser {
     private File zipFile;
-    //File file = new File(".");
     File home = new ApplicationHome().getDir();
-   // private String downloadDir = ClassLoader.getSystemResource(".").getFile()+ "/";
-   // private String downloadDir = file.getAbsolutePath();
-   private String downloadDir = home.getAbsolutePath()+"/";
-
+    private String downloadDir = home.getAbsolutePath()+"/";
     private String zipFileName = "fms.zip";
     private String sourceURL = "http://webzato.com/fms/fms_structure_10012018.zip";
     private String uncompressedDir = downloadDir+"uncompressed/";
     private String csvFile;
 
-
-
-
     @Autowired
     private DepartmentRepository departmentRepository;
     //Загрузка файла
     public File load(){
-
-
         try {
             System.out.println("downloadDir: ");
             System.out.println(downloadDir);
-          //  System.out.println(ClassLoader.getSystemResource("."));
-            //TODO project resources
             zipFile = new File(downloadDir + zipFileName);
             if (zipFile.createNewFile()) {
                 System.out.println("File is created!");
@@ -69,9 +58,7 @@ public class FmsParserImpl implements FmsParser {
 
             //We will unzip files in this folder
             String uncompressedDirectory = uncompressedDir;
-            //Files.createDirectory(fileSystem.getPath(uncompressedDirectory));
             new File(uncompressedDirectory).mkdir();
-            //Iterate over entries
             while (entries.hasMoreElements())
             {
                 ZipEntry entry = entries.nextElement();
@@ -80,7 +67,7 @@ public class FmsParserImpl implements FmsParser {
                 {
                     System.out.println("Creating Directory:" + uncompressedDirectory + entry.getName());
                     new File(uncompressedDirectory + entry.getName()).mkdir();
-                    //  Files.createDirectories(fileSystem.getPath(uncompressedDirectory + entry.getName()));
+
                 }
                 //Else create the file
                 else
@@ -91,8 +78,6 @@ public class FmsParserImpl implements FmsParser {
                     BufferedInputStream bis = new BufferedInputStream(is);
                     String uncompressedFileName = uncompressedDirectory + entry.getName();
                     csvFile = uncompressedFileName;
-                    //Path uncompressedFilePath = fileSystem.getPath(uncompressedFileName);
-                    //Files.createFile(uncompressedFilePath);
                     System.out.println("Creating File:" + uncompressedFileName);
                     new File(uncompressedFileName);
                     FileOutputStream fileOutput = new FileOutputStream(uncompressedFileName);
@@ -130,13 +115,11 @@ public class FmsParserImpl implements FmsParser {
 
             while ((line = br.readLine()) != null) {
 
-                // use comma as separator
                 String[] depStr = line.split(cvsSplitBy);
                 String code = depStr[1].replaceAll("\"","");//проверь!
                 code = code.replaceAll(" ","");//проверь!
                 String name = depStr[0].replaceAll("\"","");//проверь!
                 String utf8name= new String(name.getBytes("utf-8"),"utf-8");
-
                 System.out.println("Country [code= " + depStr[1] + " , name=" + name + "]");
                 Department department = new Department(name, code);
                 this.departmentRepository.save(department);
@@ -149,10 +132,6 @@ public class FmsParserImpl implements FmsParser {
         return "OK";
     }
 
-    public String convert(){
-
-        return "OK";
-    }
 
     public String update(){
         this.load();
