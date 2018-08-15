@@ -1,8 +1,3 @@
-- Клонируем репозиторий с гитхаба:
-```
-git clone https://github.com/revalle88/springFMS.git
-```
-
 - Устанавливаем posgresql:
 ```
 sudo apt-get install postgresql postgresql-contrib
@@ -16,9 +11,16 @@ psql -s fms
 create user fmsuser password 'dance7';
 GRANT ALL PRIVILEGES ON DATABASE fms TO fmsuser;
 ```
+(На Windows можно установить postgres через инсталлер и через pgadmin создать базу fms и пользователя  user fmsuser password 'dance7')
+
+- Клонируем репозиторий с гитхаба:
+```
+git clone https://github.com/revalle88/springFMS.git
+```
 
 - Переходим в корневую папку репозитория (где лежит pom.xml) и запускаем сборку проекта:
 ```
+cd springFMS/
 mvn clean install
 ```
 (если тесты валятся, то .. =)
