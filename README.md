@@ -17,7 +17,7 @@ create user fmsuser password 'dance7';
 GRANT ALL PRIVILEGES ON DATABASE fms TO fmsuser;
 ```
 
-- Запускаем сборку проекта:
+- Переходим в корневую папку репозитория (где лежит pom.xml) и запускаем сборку проекта:
 ```
 mvn clean install
 ```
@@ -28,4 +28,9 @@ mvn clean install -DskipTests)
 - Запускаем приложение из jar файла.
 ```
 java -jar target/demo-0.0.1-SNAPSHOT.jar
+```
+
+- Запускаем приложение в браузере:
+```
+http://localhost:8080/
 ```
