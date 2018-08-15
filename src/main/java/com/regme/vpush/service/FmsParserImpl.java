@@ -31,7 +31,7 @@ public class FmsParserImpl implements FmsParser {
 
     @Autowired
     private DepartmentRepository departmentRepository;
-    //Загрузка файла
+    //Загружаем файл с URL и сохраняем
     public File load(){
         try {
             System.out.println("downloadDir: ");
@@ -47,34 +47,30 @@ public class FmsParserImpl implements FmsParser {
         catch (Exception e) { e.printStackTrace(); }
         return zipFile;
     }
-
+    //Распаковка файла
     public String unzip(){
 
 
         try(ZipFile file = new ZipFile(downloadDir + zipFileName))
         {
-            //Get file entries
             Enumeration<? extends ZipEntry> entries = file.entries();
-
-            //We will unzip files in this folder
             String uncompressedDirectory = uncompressedDir;
             new File(uncompressedDirectory).mkdir();
             while (entries.hasMoreElements())
             {
                 ZipEntry entry = entries.nextElement();
-                //If directory then create a new directory in uncompressed folder
+                //Если папка, то создаем папку
                 if (entry.isDirectory())
                 {
                     System.out.println("Creating Directory:" + uncompressedDirectory + entry.getName());
                     new File(uncompressedDirectory + entry.getName()).mkdir();
 
                 }
-                //Else create the file
+                //Если файл то создаем файл
                 else
                 {
-                    System.out.println("Creating InputStream:");
+
                     InputStream is = file.getInputStream(entry);
-                    System.out.println("Creating BufferedInputStream:");
                     BufferedInputStream bis = new BufferedInputStream(is);
                     String uncompressedFileName = uncompressedDirectory + entry.getName();
                     csvFile = uncompressedFileName;
@@ -105,22 +101,18 @@ public class FmsParserImpl implements FmsParser {
         departmentRepository.deleteAll();
         String line = "";
         String cvsSplitBy = ",";
-        String charset = "cp1251"; // or what corresponds
+        //задаем кодировку для чтения из файла
+        String charset = "cp1251";
         try {
-
-
             BufferedReader br = new BufferedReader(
                     new InputStreamReader (new FileInputStream(csvFile), charset));
-
-
             while ((line = br.readLine()) != null) {
-
                 String[] depStr = line.split(cvsSplitBy);
-                String code = depStr[1].replaceAll("\"","");//проверь!
-                code = code.replaceAll(" ","");//проверь!
-                String name = depStr[0].replaceAll("\"","");//проверь!
-                String utf8name= new String(name.getBytes("utf-8"),"utf-8");
-                System.out.println("Country [code= " + depStr[1] + " , name=" + name + "]");
+                String code = depStr[1].replaceAll("\"","");
+                code = code.replaceAll(" ","");
+                String name = depStr[0].replaceAll("\"","");
+                //String utf8name= new String(name.getBytes("utf-8"),"utf-8");
+                System.out.println("FMS [code= " + code + " , name=" + name + "]");
                 Department department = new Department(name, code);
                 this.departmentRepository.save(department);
 
@@ -132,7 +124,7 @@ public class FmsParserImpl implements FmsParser {
         return "OK";
     }
 
-
+    //обновить справочник ФМС
     public String update(){
         this.load();
         this.unzip();
